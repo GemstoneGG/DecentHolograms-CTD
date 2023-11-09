@@ -51,8 +51,8 @@ public class S {
         }
     }
 
-    public static Runnable asyncTask(Runnable runnable, long interval, long delay) {
-        return Bukkit.getAsyncScheduler().runAtFixedRate(DECENT_HOLOGRAMS.getPlugin(), $ -> runnable.run(), delay * 50, interval * 50, java.util.concurrent.TimeUnit.MILLISECONDS)::cancel;
+    public static BukkitTask asyncTask(Runnable runnable, long interval) {
+        return Bukkit.getScheduler().runTaskTimerAsynchronously(DECENT_HOLOGRAMS.getPlugin(), runnable, 0, interval);
     }
 
     public static BukkitTask asyncTask(Runnable runnable, long interval, long delay) {
