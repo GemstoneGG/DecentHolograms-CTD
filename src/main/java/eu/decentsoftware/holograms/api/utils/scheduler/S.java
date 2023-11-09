@@ -19,16 +19,8 @@ public class S {
         Bukkit.getScheduler().runTask(DECENT_HOLOGRAMS.getPlugin(), runnable);
     }
 
-    public static void sync(org.bukkit.entity.Player player, Runnable runnable) {
-        player.getScheduler().run(DECENT_HOLOGRAMS.getPlugin(), $ -> runnable.run(), null);
-    }
-
     public static BukkitTask sync(Runnable runnable, long delay) {
         return Bukkit.getScheduler().runTaskLater(DECENT_HOLOGRAMS.getPlugin(), runnable, delay);
-    }
-
-    public static void sync(org.bukkit.entity.Player player, Runnable runnable, long delay) {
-        player.getScheduler().runDelayed(DECENT_HOLOGRAMS.getPlugin(), $ -> runnable.run(), null, delay);
     }
 
     public static BukkitTask syncTask(Runnable runnable, long interval) {
@@ -37,7 +29,7 @@ public class S {
 
     public static void async(Runnable runnable) {
         try {
-            Bukkit.getAsyncScheduler().runNow(DECENT_HOLOGRAMS.getPlugin(), $ -> runnable.run());
+            Bukkit.getScheduler().runTaskAsynchronously(DECENT_HOLOGRAMS.getPlugin(), runnable);
         } catch (IllegalPluginAccessException e) {
             DExecutor.execute(runnable);
         }
@@ -45,7 +37,7 @@ public class S {
 
     public static void async(Runnable runnable, long delay) {
         try {
-            Bukkit.getAsyncScheduler().runDelayed(DECENT_HOLOGRAMS.getPlugin(), $ -> runnable.run(), delay * 50, java.util.concurrent.TimeUnit.MILLISECONDS);
+            Bukkit.getScheduler().runTaskLaterAsynchronously(DECENT_HOLOGRAMS.getPlugin(), runnable, delay);
         } catch (IllegalPluginAccessException e) {
             DExecutor.execute(runnable);
         }

@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class Ticker {
 
-    private final Runnable cancelTask;
+    private final int taskId;
     private final AtomicLong ticks;
     private final DList<ITicked> tickedObjects;
     private final DList<ITicked> newTickedObjects;
@@ -24,16 +24,16 @@ public class Ticker {
         this.newTickedObjects = new DList<>(64);
         this.removeTickedObjects = new DList<>(64);
         this.performingTick = false;
-        this.cancelTask = S.asyncTask(() -> {
+        this.taskId = S.asyncTask(() -> {
             if (!performingTick) tick();
-        }, 1L, 5L);
+        }, 1L, 5L).getTaskId();
     }
 
     /**
      * Stop the ticker and unregister all ticked objects.
      */
     public void destroy() {
-        cancelTask.run();
+        S.stopTask(taskId);
         tickedObjects.clear();
         newTickedObjects.clear();
         removeTickedObjects.clear();
